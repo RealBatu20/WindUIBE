@@ -1,0 +1,35 @@
+{"op":"theme.add","payload":{"Accent":"#18181b","Background":"#101010","Button":"#52525b","Icon":"#a1a1aa","Name":"Minimal Dark","Outline":"#ffffff","Placeholder":"#7a7a7a","Text":"#ffffff"}}
+{"op":"window.create","payload":{"id":10,"config":{"Acrylic":false,"Author":"by TheRealBatu · C++ API","AutoScale":true,"Folder":"WindUIBedrock","HideSearchBar":false,"Icon":"wind","MaxSize":{"X":1000,"Y":720},"MinSize":{"X":340,"Y":260},"NewElements":true,"Resizable":true,"SideBarWidth":185,"Size":{"X":740,"Y":490},"Theme":"Dark","Title":"WindUI Native","Transparent":true}}}
+{"op":"tab.create","payload":{"id":11,"parent":10,"config":{"Desc":"C++ API driven interface","Icon":"home","ShowTabTitle":true,"Title":"Main"}}}
+{"op":"element.create","payload":{"id":12,"parent":11,"type":"paragraph","config":{"Desc":"This demo is constructed in native C++, with a Java loader and an Android WebView renderer. All events are passed to C++. ","Image":"check","Title":"WindUI C++ API"}}}
+{"op":"container.create","payload":{"id":13,"parent":11,"type":"section","config":{"Icon":"settings","Opened":true,"Title":"Interactive Elements"}}}
+{"op":"element.create","payload":{"id":14,"parent":13,"type":"toggle","config":{"Desc":"Native boolean callback","Flag":"feature.enabled","Title":"Enable feature","Value":true}}}
+{"op":"element.create","payload":{"id":15,"parent":13,"type":"slider","config":{"Desc":"A configurable value from 0 to 100","Flag":"brightness","Title":"Brightness Control","Value":{"Min":0,"Max":100,"Default":60,"Step":1}}}}
+{"op":"element.create","payload":{"id":16,"parent":13,"type":"slider","config":{"Flag":"volume","Title":"Volume Settings","Value":{"Min":0,"Max":100,"Default":45,"Step":1}}}}
+{"op":"container.create","payload":{"id":17,"parent":11,"type":"group","config":{}}}
+{"op":"element.create","payload":{"id":18,"parent":17,"type":"button","config":{"Icon":"check","Title":"Save"}}}
+{"op":"element.create","payload":{"id":19,"parent":17,"type":"button","config":{"Icon":"settings","Title":"Reset"}}}
+{"op":"tab.create","payload":{"id":20,"parent":10,"config":{"Icon":"layers","ShowTabTitle":true,"Title":"Elements"}}}
+{"op":"element.create","payload":{"id":21,"parent":20,"type":"paragraph","config":{"Desc":"All of these are available through WindUI::Container in C++.","Title":"Standard WindUI components"}}}
+{"op":"element.create","payload":{"id":22,"parent":20,"type":"input","config":{"Desc":"Text input","Flag":"username","Placeholder":"Type your name","Title":"Username"}}}
+{"op":"element.create","payload":{"id":23,"parent":20,"type":"dropdown","config":{"Flag":"mode","Title":"Select mode","Value":"Normal","Values":["Normal","Creative","Advanced"]}}}
+{"op":"element.create","payload":{"id":24,"parent":20,"type":"colorpicker","config":{"Default":"#387cde","Title":"Accent color"}}}
+{"op":"element.create","payload":{"id":25,"parent":20,"type":"keybind","config":{"Title":"Bind a key","Value":"K"}}}
+{"op":"element.create","payload":{"id":26,"parent":20,"type":"toggle","config":{"Title":"Enable notifications","Value":true}}}
+{"op":"element.create","payload":{"id":27,"parent":20,"type":"progressbar","config":{"Progress":68,"Title":"ProgressBar"}}}
+{"op":"element.create","payload":{"id":28,"parent":20,"type":"code","config":{"Code":"auto tab = window.Tab(TabConfig{}.Title(\"Main\"));\ntab.Toggle(ElementConfig{}.Title(\"Enabled\").Value(true));","Title":"C++ example"}}}
+{"op":"element.create","payload":{"id":29,"parent":20,"type":"divider","config":{}}}
+{"op":"element.create","payload":{"id":30,"parent":20,"type":"space","config":{"Columns":1}}}
+{"op":"tab.create","payload":{"id":31,"parent":10,"config":{"Icon":"palette","ShowTabTitle":true,"Title":"Themes"}}}
+{"op":"element.create","payload":{"id":32,"parent":31,"type":"paragraph","config":{"Desc":"Use WindUI::AddTheme with Minimal or Advanced theme colors. All theme options below are driven by C++ callbacks.","Title":"Theme engine"}}}
+{"op":"element.create","payload":{"id":33,"parent":31,"type":"dropdown","config":{"Title":"Select Theme","Value":"Dark","Values":["Dark","Light","Rose","Plant","Red","Indigo","Sky","Violet","Amber","Emerald","Midnight","Crimson","Monokai Pro","Cotton Candy","Mellowsi","Rainbow","Minimal Dark"]}}}
+{"op":"element.create","payload":{"id":34,"parent":31,"type":"colorpicker","config":{"Default":"#a1a1aa","Title":"Custom color"}}}
+{"op":"tab.create","payload":{"id":35,"parent":10,"config":{"Icon":"bird","ShowTabTitle":true,"Title":"About"}}}
+{"op":"element.create","payload":{"id":36,"parent":35,"type":"paragraph","config":{"Desc":"This mod uses LumaUI-style activity discovery and dynamically loads a small DEX bridge. The layout/control API is C++17. No Minecraft gameplay functions are hooked.","Title":"Levi Launchroid"}}}
+{"op":"element.create","payload":{"id":37,"parent":35,"type":"image","config":{"Desc":"No Roblox services or Luau runtime required","Icon":"wind","Title":"Offline UI"}}}
+{"op":"modal.create","payload":{"id":38,"type":"dialog","config":{"Content":"Continue with this native action?","Icon":"check","Title":"Confirm Action"},"buttons":[{"id":39,"Title":"Continue","Variant":"Primary","Icon":"check"},{"id":40,"Title":"Cancel","Variant":"Secondary","Icon":"layers"}]}}
+{"op":"element.create","payload":{"id":41,"parent":20,"type":"button","config":{"Icon":"bell","Title":"Open confirmation dialog"}}}
+{"op":"modal.create","payload":{"id":42,"type":"popup","config":{"Content":"This standalone popup is defined through C++.","Title":"Welcome"},"buttons":[{"id":43,"Title":"OK","Variant":"Primary","Icon":"check"}]}}
+{"op":"element.create","payload":{"id":44,"parent":20,"type":"button","config":{"Icon":"bell","Title":"Open popup"}}}
+{"op":"element.create","payload":{"id":45,"parent":20,"type":"button","config":{"Icon":"bell","Title":"Notify"}}}
+{"op":"tag.create","payload":{"id":46,"config":{"Title":"v2.0.1"}}}

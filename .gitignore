@@ -1,0 +1,11 @@
+/build/
+/dist/
+*.o
+*.so
+*.levipack
+__pycache__/
+*.pyc
+/tests/demo_host
+/tests/runtime.html
+/tests/demo_browser.html
+/tests/chromium.log

@@ -1,0 +1,41 @@
+name: Verify native mod
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: android-actions/setup-android@v3
+      - name: Install NDK r28c
+        run: sdkmanager 'ndk;28.2.13676358'
+      - name: Build arm64 and package
+        run: |
+          export ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/28.2.13676358"
+          ./build.sh
+          python3 tests/test_static.py
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: winduibe-arm64-levipack
+          path: |
+            dist/libWindUI.so
+            dist/libWindUI_2.0.1.levipack
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install mistune==3.2.1
+      - name: Rebuild docs and check deterministic outputs
+        run: |
+          python scripts/build_docs.py
+          git diff --exit-code -- docs
+          python3 tests/test_docs.py

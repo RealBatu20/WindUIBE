@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Windows &amp; tabs"><title>Windows &amp; tabs — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item active" href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>WINDOWS &amp; TABS</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="windows-tabs-and-layout">Windows, tabs and layout<a class="anchor" href="#windows-tabs-and-layout" aria-label="Link to heading">#</a></h1>
+<h2 id="createwindow">CreateWindow<a class="anchor" href="#createwindow" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">auto window = WindUI::CreateWindow(
+  WindUI::WindowConfig{}
+    .Title(&quot;My Super Hub&quot;)
+    .Icon(&quot;door-open&quot;)
+    .Author(&quot;by RealBatu20&quot;)
+    .Folder(&quot;MySuperHub&quot;)
+    .Size(580, 460)
+    .MinSize(400, 300)
+    .MaxSize(850, 560)
+    .Theme(&quot;Dark&quot;)
+    .Resizable(true)
+    .SideBarWidth(200)
+    .HideSearchBar(false)
+    .Acrylic(false)
+);
+</code></pre>
+<p>Values are pixels in a density-independent layout model, not Roblox <code>UDim2</code>. <code>Size</code> also informs the Android overlay. Some UI window configuration properties are stored but not fully honored by the Android renderer.</p>
+<h3 id="windowconfig-fields">WindowConfig fields<a class="anchor" href="#windowconfig-fields" aria-label="Link to heading">#</a></h3>
+<table>
+<thead>
+<tr>
+  <th>Group</th>
+  <th>Available builders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Branding</td>
+  <td><code>Title</code>, <code>Icon</code>, <code>Author</code>, <code>Folder</code></td>
+</tr>
+<tr>
+  <td>Geometry</td>
+  <td><code>Size(w,h)</code>, <code>MinSize(w,h)</code>, <code>MaxSize(w,h)</code>, <code>Position</code></td>
+</tr>
+<tr>
+  <td>Appearance</td>
+  <td><code>Transparent</code>, <code>Theme</code>, <code>Radius</code>, <code>ElementsRadius</code>, <code>Background</code>, <code>BackgroundImageTransparency</code>, <code>ShadowTransparency</code>, <code>Acrylic</code></td>
+</tr>
+<tr>
+  <td>Navigation</td>
+  <td><code>SideBarWidth</code>, <code>HideSearchBar</code>, <code>ScrollBarEnabled</code>, <code>ToggleKey</code>, <code>Topbar</code>, <code>Footer</code>, <code>OpenButton</code></td>
+</tr>
+<tr>
+  <td>Behavior</td>
+  <td><code>Resizable</code>, <code>AutoScale</code>, <code>NewElements</code>, <code>IgnoreAlerts</code>, <code>HidePanelBackground</code>, <code>TopBarButtonIconSize</code></td>
+</tr>
+<tr>
+  <td>Advanced</td>
+  <td><code>User</code>, <code>KeySystem</code></td>
+</tr>
+</tbody>
+</table>
+<p>For nested fields, pass <code>Json::Object({{&quot;Enabled&quot;,true},{&quot;Anonymous&quot;,true}})</code> to a builder such as <code>.User(...)</code>. Roblox-specific optional fields may be accepted without effective rendering.</p>
+<h2 id="window-methods">Window methods<a class="anchor" href="#window-methods" aria-label="Link to heading">#</a></h2>
+<p><code>window.Tab(TabConfig)</code>, <code>window.Section(SectionConfig)</code> (sidebar section), <code>window.Config(name)</code>, <code>window.Dialog(ModalConfig)</code>, <code>window.Tag(ElementConfig)</code>, <code>window.Divider()</code>, <code>window.CreateTopbarButton(ElementConfig)</code> and <code>window.DisableTopbarButtons(Config)</code>.</p>
+<p><strong>Setters:</strong> <code>SetTitle</code>, <code>SetAuthor</code>, <code>SetIcon</code>, <code>SetIconSize</code>, <code>SetSize</code>, <code>SetToggleKey</code>, <code>SetTheme</code>, <code>SetBackgroundImage</code>, <code>SetBackgroundImageTransparency</code>, <code>SetBackgroundTransparency</code>, <code>SetUIScale</code>, <code>GetUIScale</code>, <code>SetPanelBackground</code>, <code>IsResizable</code>, <code>ToggleTransparency</code>, <code>SetToTheCenter</code>.</p>
+<p><strong>Window control:</strong> <code>Open</code>, <code>Close</code>, <code>Toggle</code>, <code>Destroy</code>, <code>ToggleFullscreen</code>, <code>SelectTab</code>, <code>LockAll</code>, <code>UnlockAll</code>, <code>GetLocked</code>, <code>GetUnlocked</code>, <code>EditOpenButton</code>, <code>OnOpen</code>, <code>OnClose</code>, <code>OnDestroy</code>, <code>OnUserClick</code>, <code>KeyValidator</code>. Callbacks use <code>WindUI_Callback</code> unless otherwise specified.</p>
+<h2 id="tabs">Tabs<a class="anchor" href="#tabs" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">auto tab = window.Tab(TabConfig{}
+    .Title(&quot;Tools&quot;)
+    .Desc(&quot;Tools available in this panel&quot;)
+    .Icon(&quot;settings&quot;)
+    .IconColor(&quot;#ff6464&quot;)
+    .IconShape(&quot;Square&quot;)
+    .IconThemed(true)
+    .Locked(false)
+    .ShowTabTitle(true)
+    .Border(false)
+    .CustomEmptyPage(Json::Object({
+        {&quot;Title&quot;,&quot;No controls yet&quot;}, {&quot;Desc&quot;,&quot;Add C++ elements.&quot;},
+        {&quot;Icon&quot;,&quot;layers&quot;}
+    }))
+);
+</code></pre>
+<p>TabConfig also exposes <code>TabTitleAlign</code>. Available tab methods are <code>SetTitle</code>, <code>SetDesc</code>, <code>Lock</code>, <code>Unlock</code>, <code>Select</code>, <code>Open</code>, <code>Close</code>, <code>Destroy</code>, and <code>ScrollToTheElement(element.ID())</code>.</p>
+<h2 id="sections-groups-and-stacks">Sections, groups and stacks<a class="anchor" href="#sections-groups-and-stacks" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">auto sidebar = window.Section(SectionConfig{}.Title(&quot;Administration&quot;));
+auto settings = sidebar.Tab(TabConfig{}.Title(&quot;Settings&quot;));
+auto advanced = settings.Section(SectionConfig{}
+  .Title(&quot;Advanced options&quot;).Icon(&quot;settings&quot;).Opened(false));
+advanced.Toggle(ElementConfig{}.Title(&quot;Expert mode&quot;).Value(false));
+
+auto row = settings.HStack();
+row.Button(ElementConfig{}.Title(&quot;Save&quot;));
+row.Button(ElementConfig{}.Title(&quot;Reset&quot;));
+
+settings.Group().Input(ElementConfig{}.Title(&quot;Username&quot;));
+settings.VStack().Label(ElementConfig{}.Title(&quot;Additional information&quot;));
+</code></pre>
+<p><code>SectionConfig</code>: <code>Title</code>, <code>Desc</code>, <code>Icon</code>, <code>IconThemed</code>, <code>Opened</code>, <code>Box</code>, <code>BoxBorder</code>, <code>TextXAlignment</code>, <code>TextTransparency</code>, <code>TextSize</code>, <code>FontWeight</code>. Nested container rendering is supported; individual Roblox layout semantics are approximated by flexbox.</p>
+<h2 id="persistence">Persistence<a class="anchor" href="#persistence" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">auto config = window.Config(&quot;default&quot;);
+config.Save(); config.Load(); config.Delete();
+</code></pre>
+<p>This is WebView localStorage for control flags, not Roblox filesystem storage. Only elements using <code>.Flag(&quot;name&quot;)</code> are saved/restored in the built-in control flag model.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="quickstart.html">← Quick start</a><a href="elements.html">Controls & elements →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

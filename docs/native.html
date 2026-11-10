@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Native C++ ABI"><title>Native C++ ABI — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item active" href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>NATIVE C++ ABI</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="native-abi-and-architecture">Native ABI and architecture<a class="anchor" href="#native-abi-and-architecture" aria-label="Link to heading">#</a></h1>
+<h2 id="how-the-bridge-works">How the bridge works<a class="anchor" href="#how-the-bridge-works" aria-label="Link to heading">#</a></h2>
+<ol>
+<li>Levi Launchroid loads <code>libWindUI.so</code> through the <code>preload-native</code> manifest.</li>
+<li><code>src/loader.cpp</code> discovers the launcher Android Activity and creates the overlay.</li>
+<li>C++ uses an in-memory DEX containing the <code>windui.Bridge</code> Java class for Android UI-thread and touch callbacks.</li>
+<li>The offline <code>assets/windui.html</code> + <code>assets/windui.js</code> render controls in an Android WebView.</li>
+<li>C++ calls <code>WindUI_Command</code> to send JSON commands to the view. UI events return through <code>windui://event</code> URLs and invoke registered <code>WindUI_Callback</code> handlers.</li>
+</ol>
+<p>There is no Roblox Lua interpreter, injected Roblox objects, or Minecraft GUI scene graph. This is not a pure-C++ graphics renderer, and Android WebView remains a runtime dependency.</p>
+<h2 id="exported-c-abi-include-windui-h">Exported C ABI (<code>include/WindUI.h</code>)<a class="anchor" href="#exported-c-abi-include-windui-h" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">typedef void (*WindUI_Callback)(int elementId, const char* value, void* userdata);
+
+int WindUI_IsReady(void);
+int WindUI_NextId(void);
+int WindUI_Command(const char* method,const char* payloadJson,int persistent);
+void WindUI_On(int id,WindUI_Callback callback,void* userdata);
+void WindUI_Off(int id);
+void WindUI_RegisterCallback(WindUI_Callback callback,void* userdata);
+void WindUI_Open(void);
+void WindUI_Close(void);
+void WindUI_SetOverlaySize(int widthDp,int heightDp);
+void WindUI_SetOpenButtonEnabled(int enabled);
+void WindUI_SetUIScale(double value);
+double WindUI_GetUIScale(void);
+void WindUI_SetTransparency(double value);
+double WindUI_GetTransparency(void);
+void WindUI_GetWindowSize(int* widthDp,int* heightDp);
+const char* WindUI_GetCurrentTheme(void);
+const char* WindUI_GetThemesJSON(void);
+const char* WindUI_GetLockedIdsJSON(int getLocked);
+</code></pre>
+<p>Other exports: <code>WindUI_SetTheme</code>, <code>WindUI_OnKeyValidation</code>, <code>WindUI_GetDiagnosticSignature</code>; legacy <code>WindUI_SetTitle</code>, <code>WindUI_Notify</code>, <code>WindUI_AddTab</code>, <code>WindUI_AddButton</code>, <code>WindUI_AddToggle</code>, <code>WindUI_AddSlider</code>, <code>WindUI_AddInput</code>, <code>WindUI_AddDropdown</code>.</p>
+<p>Native extensions may call these through <code>dlsym</code> if the launcher's Android linker namespace permits access. The C++ convenience layer expects a linked/resolvable C ABI. See <code>examples/native_extension.cpp</code> for a concrete extension.</p>
+<h2 id="native-event-handlers">Native event handlers<a class="anchor" href="#native-event-handlers" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">static void onChange(int id, const char* value, void* userdata) {
+    // value points to an event payload; consume it in this call.
+}
+
+auto tab = window.Tab(TabConfig{}.Title(&quot;Settings&quot;));
+int id = tab.Toggle(ElementConfig{}.Title(&quot;Enabled&quot;).Value(true))
+            .OnChange(onChange).ID();
+</code></pre>
+<p>The callback runs on the Android UI thread; marshal to your own worker for expensive work. Avoid blocking WebView event dispatch. JSON and individual values should be validated if they come from dynamic control inputs.</p>
+<h2 id="wildcard-signature">Wildcard signature<a class="anchor" href="#wildcard-signature" aria-label="Link to heading">#</a></h2>
+<p>The loader includes a 64-byte hardcoded diagnostic pattern with wildcard bytes for the supplied 1.26.62.1 ARM64 ELF. This pattern is <strong>not used to patch memory or hook Minecraft</strong>. Do not assume it matches other builds or enables compatibility.</p>
+<h2 id="source-api-relationship">Source/API relationship<a class="anchor" href="#source-api-relationship" aria-label="Link to heading">#</a></h2>
+<p><code>WindUI.hpp</code> declares builder methods and serializes commands. <code>windui.js</code> must implement a corresponding <code>dispatch</code> operation and actual DOM interaction for a feature to work. <strong>A declared builder does not automatically mean full Roblox behavior exists.</strong></p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="overlays.html">← Dialogs & popups</a><a href="build.html">Build & limitations →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

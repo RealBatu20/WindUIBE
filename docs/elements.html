@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Controls &amp; elements"><title>Controls &amp; elements — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item active" href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>CONTROLS &amp; ELEMENTS</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="controls-element-apis">Controls &amp; element APIs<a class="anchor" href="#controls-element-apis" aria-label="Link to heading">#</a></h1>
+<p>Every <code>Tab</code>, <code>Section</code>, <code>Group</code>, <code>HStack</code> and <code>VStack</code> is a <code>Container</code>. All of them provide the same control builders returning <code>WindUI::Element</code>. Call <code>OnChange(callback, userdata)</code> or <code>OnClick(callback, userdata)</code> on the returned element handle.</p>
+<h2 id="supported-control-builders">Supported control builders<a class="anchor" href="#supported-control-builders" aria-label="Link to heading">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Builder</th>
+  <th>Primary fields</th>
+  <th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>Button</code></td>
+  <td><code>Title</code>, <code>Icon</code>, <code>Variant</code>; <code>ButtonText</code> via <code>.Set()</code></td>
+  <td>Click callback; icon/variant styling</td>
+</tr>
+<tr>
+  <td><code>Toggle</code></td>
+  <td><code>Title</code>, <code>Value(bool)</code>, <code>Flag</code></td>
+  <td>Rounded WindUI pill switch</td>
+</tr>
+<tr>
+  <td><code>Checkbox</code></td>
+  <td><code>Title</code>, <code>Value(bool)</code></td>
+  <td>Small square checkmark, distinct from toggle</td>
+</tr>
+<tr>
+  <td><code>Slider</code></td>
+  <td><code>Title</code>, <code>Range(min,max,default,step)</code></td>
+  <td>HTML range; value callback on change</td>
+</tr>
+<tr>
+  <td><code>Dropdown</code></td>
+  <td><code>Title</code>, <code>Values</code>, <code>Value</code>, <code>Multi</code></td>
+  <td>Expands <strong>inside</strong> UI; single or multi select</td>
+</tr>
+<tr>
+  <td><code>Input</code></td>
+  <td><code>Title</code>, <code>Placeholder</code>, <code>Password</code>, <code>Numeric</code></td>
+  <td>Text input with callback on change</td>
+</tr>
+<tr>
+  <td><code>Colorpicker</code></td>
+  <td><code>Title</code>, <code>Default(&quot;#rrggbb&quot;)</code></td>
+  <td>Android WebView color picker may vary</td>
+</tr>
+<tr>
+  <td><code>Keybind</code></td>
+  <td><code>Title</code>, <code>Value(&quot;K&quot;)</code></td>
+  <td>Listens for DOM keydown; keyboard behavior depends on Android</td>
+</tr>
+<tr>
+  <td><code>Paragraph</code></td>
+  <td><code>Title</code>, <code>Desc</code>, <code>Image</code>, <code>Buttons</code></td>
+  <td>Informational card</td>
+</tr>
+<tr>
+  <td><code>Code</code></td>
+  <td><code>Title</code>, <code>Code</code></td>
+  <td>Code display and copy button</td>
+</tr>
+<tr>
+  <td><code>Image</code></td>
+  <td><code>Title</code>, <code>Image</code>, <code>Icon</code></td>
+  <td>HTTPS URL or bundled icon fallback</td>
+</tr>
+<tr>
+  <td><code>ProgressBar</code></td>
+  <td><code>Title</code>, <code>Progress</code></td>
+  <td>Non-interactive progress indicator</td>
+</tr>
+<tr>
+  <td><code>Label</code></td>
+  <td><code>Title</code></td>
+  <td>Group label</td>
+</tr>
+<tr>
+  <td><code>Divider</code></td>
+  <td>none</td>
+  <td>Horizontal separator</td>
+</tr>
+<tr>
+  <td><code>Space</code></td>
+  <td><code>Columns</code></td>
+  <td>Vertical spacing</td>
+</tr>
+</tbody>
+</table>
+<p>See <code>include/WindUI.hpp</code> for the complete <code>ElementConfig</code> field list. Exposed fields such as <code>SearchBarEnabled</code>, <code>AllowNone</code>, <code>Continuous</code>, <code>Transparency</code>, <code>ImageSize</code>, <code>MenuWidth</code> and <code>IconAlign</code> are not guaranteed to have full Roblox behavior.</p>
+<h2 id="button-and-toggle">Button and toggle<a class="anchor" href="#button-and-toggle" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">static void clicked(int id, const char* value, void*) { /* &quot;click&quot; */ }
+static void toggled(int id, const char* value, void*) { /* &quot;true&quot; or &quot;false&quot; */ }
+
+auto action = tab.Button(ElementConfig{}.Title(&quot;Save&quot;).Icon(&quot;check&quot;)
+  .Variant(&quot;Primary&quot;));
+action.OnClick(clicked);
+
+auto enabled = tab.Toggle(ElementConfig{}.Title(&quot;Enable feature&quot;)
+  .Desc(&quot;C++ boolean event&quot;)
+  .Value(false).Flag(&quot;feature.enabled&quot;));
+enabled.OnChange(toggled);
+</code></pre>
+<p>The demo's <strong>Enable notifications</strong> setting is now a <code>Toggle</code>, not a square checkbox. A genuine <code>Checkbox</code> remains available for explicit checkbox-style forms.</p>
+<h2 id="slider-and-dropdown">Slider and dropdown<a class="anchor" href="#slider-and-dropdown" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">// Value range: Min=0 Max=100 Default=50 Step=5
+tab.Slider(ElementConfig{}.Title(&quot;Volume&quot;).Range(0,100,50,5));
+
+auto mode = tab.Dropdown(ElementConfig{}
+  .Title(&quot;Select mode&quot;)
+  .Values(std::vector&lt;std::string&gt;{&quot;Normal&quot;,&quot;Creative&quot;,&quot;Advanced&quot;})
+  .Value(&quot;Normal&quot;)
+  .Flag(&quot;mode&quot;));
+mode.OnChange(clicked);
+
+// Multiple selections produce JSON-array callback values.
+tab.Dropdown(ElementConfig{}.Title(&quot;Tags&quot;)
+  .Values(std::vector&lt;std::string&gt;{&quot;A&quot;,&quot;B&quot;,&quot;C&quot;})
+  .Multi(true));
+</code></pre>
+<p>Dropdown options are rendered as rows directly beneath the trigger <strong>inside the scrollable WindUI panel</strong>. They do not open the Android full-screen selection dialog. <code>Value</code> can be a scalar or a JSON array when <code>Multi</code> is enabled. Complex arbitrary dropdown object config is only partly supported.</p>
+<h2 id="inputs-colors-keybinds">Inputs, colors, keybinds<a class="anchor" href="#inputs-colors-keybinds" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">tab.Input(ElementConfig{}.Title(&quot;Username&quot;)
+    .Placeholder(&quot;Type your name&quot;)
+    .Value(&quot;&quot;));
+tab.Input(ElementConfig{}.Title(&quot;PIN&quot;)
+    .Password(true).Placeholder(&quot;Secret&quot;));
+tab.Colorpicker(ElementConfig{}.Title(&quot;Accent&quot;)
+    .Default(&quot;#0091ff&quot;));
+tab.Keybind(ElementConfig{}.Title(&quot;Shortcut&quot;).Value(&quot;K&quot;));
+</code></pre>
+<p>The HTML <code>type=&quot;color&quot;</code> picker can still use Android's own picker UI; only <strong>dropdowns</strong> were converted to WindUI's in-panel rows. Keybind selection relies on keyboard events and is not guaranteed to work with all gamepad or Android navigation buttons.</p>
+<h2 id="element-handle-methods">Element handle methods<a class="anchor" href="#element-handle-methods" aria-label="Link to heading">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>.OnChange(cb, ptr)</code>, <code>.OnClick(cb, ptr)</code></td>
+  <td>Register native callback</td>
+</tr>
+<tr>
+  <td><code>.Off()</code></td>
+  <td>Unregister callback</td>
+</tr>
+<tr>
+  <td><code>.SetValue(Json)</code>, <code>.Set(Json)</code></td>
+  <td>Update value</td>
+</tr>
+<tr>
+  <td><code>.SetTitle(str)</code>, <code>.SetDesc(str)</code></td>
+  <td>Update text</td>
+</tr>
+<tr>
+  <td><code>.SetCode</code>, <code>.SetImage</code>, <code>.SetColor</code>, <code>.SetThumbnail</code></td>
+  <td>Update type-specific fields</td>
+</tr>
+<tr>
+  <td><code>.SetMin</code>, <code>.SetMax</code>, <code>.SetWidth</code>, <code>.SetValues</code></td>
+  <td>Change range/layout/options</td>
+</tr>
+<tr>
+  <td><code>.Lock()</code>, <code>.Unlock()</code></td>
+  <td>Disable/enable input</td>
+</tr>
+<tr>
+  <td><code>.Toggle()</code></td>
+  <td>Toggle state through native command</td>
+</tr>
+<tr>
+  <td><code>.Highlight()</code>, <code>.Refresh()</code>, <code>.Select()</code></td>
+  <td>Presentation or action request</td>
+</tr>
+<tr>
+  <td><code>.Destroy()</code></td>
+  <td>Remove element and callback registration</td>
+</tr>
+<tr>
+  <td><code>.ID()</code></td>
+  <td>Stable element identifier</td>
+</tr>
+</tbody>
+</table>
+<p>Some actions (<code>Refresh</code>, selection on a non-tab element, some settable fields) are no-ops in the current renderer. They remain part of the API surface but should not be treated as fully realized Roblox behavior.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="window.html">← Windows & tabs</a><a href="themes.html">Themes →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

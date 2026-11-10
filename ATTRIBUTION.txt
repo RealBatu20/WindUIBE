@@ -1,0 +1,11 @@
+WindUI for Bedrock (MIT)
+
+UI design and naming inspired by Footagesus/WindUI, MIT licensed:
+https://github.com/Footagesus/WindUI
+Reference documentation: https://footagesus.github.io/treehub-web/docs/windui
+
+JNI + in-memory DEX loader approach informed by Zxwmwmwm/LumaUI, MIT licensed:
+https://github.com/Zxwmwmwm/LumaUI
+
+This is an independent Android WebView recreation, NOT a copy of the Roblox
+Luau engine implementation. WindUI authors have not endorsed this port.

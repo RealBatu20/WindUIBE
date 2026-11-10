@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Overview"><title>Overview — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item active" href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>OVERVIEW</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="winduibe-c-api-documentation">WindUIBE · C++ API Documentation<a class="anchor" href="#winduibe-c-api-documentation" aria-label="Link to heading">#</a></h1>
+<p><strong>WindUIBE v2.0.1</strong> is an <em>unofficial</em> C++17-first adaptation of the Roblox <a href="https://footagesus.github.io/treehub-web/docs/windui">WindUI</a> user interface style for Minecraft Bedrock on Android with Levi Launchroid. The library's C++ API builds the UI model and receives callbacks. The rendered interface is an <strong>offline Android WebView</strong> using HTML/CSS/JavaScript, connected to C++ through a small embedded Java DEX class.</p>
+<blockquote>
+<p><strong>Compatibility note:</strong> The ARM64 module, package, embedded DEX and browser interactions were verified offline; no physical-device Minecraft/Levi Launchroid test was completed. Do not interpret <code>minecraft_versions</code> as a tested compatibility list.</p>
+</blockquote>
+<h2 id="at-a-glance">At a glance<a class="anchor" href="#at-a-glance" aria-label="Link to heading">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Area</th>
+  <th>C++ API</th>
+  <th>Renderer</th>
+  <th>Parity with Roblox</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Windows and topbar</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Tabs, sidebar sections</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Nested sections, groups, HStack/VStack</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Button, Toggle, Checkbox, Slider, Input</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Dropdown (in-GUI, no Android picker)</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Colorpicker, Keybind, Image, Code, ProgressBar</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Dialog, Popup, Notify</td>
+  <td>Yes</td>
+  <td>Yes</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Themes (minimal + advanced slots)</td>
+  <td>Yes</td>
+  <td>Common CSS slots</td>
+  <td>Partial</td>
+</tr>
+<tr>
+  <td>Localization, key system, assets, resizing</td>
+  <td>Exposed</td>
+  <td>Limited</td>
+  <td>Partial / stub</td>
+</tr>
+<tr>
+  <td>Roblox <code>Instance</code>, <code>UDim2</code>, <code>Color3</code>, <code>rbxassetid://</code></td>
+  <td>No native Roblox types</td>
+  <td>N/A</td>
+  <td>Not supported</td>
+</tr>
+</tbody>
+</table>
+<h2 id="repository-layout">Repository layout<a class="anchor" href="#repository-layout" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-text">include/WindUI.hpp          C++17 fluent API
+include/WindUI.h            exported C ABI
+src/loader.cpp              JNI/Android overlay implementation
+src/Bridge.java             reference for minimal embedded DEX bridge
+src/demo.cpp                C++ demo: Main / Elements / Themes / About
+assets/windui.js            offline WebView renderer + event handling
+assets/windui.html          static offline document / CSS shell
+tools/make_bridge_dex.py    generate minimal Dalvik DEX
+build.sh                    NDK ARM64 build + levipack packaging
+tests/                      offline tests and host mock
+examples/                   API usage and theme samples
+docs/                       Markdown and GitHub Pages documentation
+</code></pre>
+<p>The loader's hardcoded wildcard signature is <strong>diagnostic only</strong>; there is no memory patching or Minecraft gameplay hook.</p>
+<h2 id="start-here">Start here<a class="anchor" href="#start-here" aria-label="Link to heading">#</a></h2>
+<p>Read <strong>Quick start</strong>, then <strong>Windows &amp; tabs</strong> and <strong>Elements</strong>. Use <strong>Themes</strong> for minimal and advanced theme configuration, <strong>Dialogs</strong> for overlay messages, and <strong>Build &amp; support</strong> for compilation and limitations.</p>
+<h2 id="interface-preview">Interface preview<a class="anchor" href="#interface-preview" aria-label="Link to heading">#</a></h2>
+<p><img src="assets/preview.png" alt="WindUIBE Native C++ interface (offline browser test)" /></p>
+<p>The screenshot was generated by an offline browser test, <strong>not</strong> captured on a real Android device.</p>
+<p><img src="assets/dropdown-open.png" alt="In-panel dropdown from v2.0.1" /></p>
+<p>The v2.0.1 menu expands beneath its control inside the WindUI panel rather than using Android's system selection screen.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><span></span><a href="quickstart.html">Quick start →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

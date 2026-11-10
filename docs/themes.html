@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Themes"><title>Themes — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item active" href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>THEMES</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="themes-and-appearance">Themes and appearance<a class="anchor" href="#themes-and-appearance" aria-label="Link to heading">#</a></h1>
+<h2 id="minimal-theme">Minimal theme<a class="anchor" href="#minimal-theme" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">Theme dark;
+dark.Name(&quot;Dark Custom&quot;)
+  .Accent(&quot;#18181b&quot;)
+  .Background(&quot;#101010&quot;)
+  .Outline(&quot;#ffffff&quot;)
+  .Text(&quot;#ffffff&quot;)
+  .Placeholder(&quot;#7a7a7a&quot;)
+  .Button(&quot;#52525b&quot;)
+  .Icon(&quot;#a1a1aa&quot;);
+AddTheme(dark);
+SetTheme(&quot;Dark Custom&quot;);
+</code></pre>
+<p>This is the C++ equivalent of WindUI's minimal Lua <code>WindUI:AddTheme</code>. Hex values use strings such as <code>&quot;#0091ff&quot;</code> (not <code>Color3</code>).</p>
+<h2 id="advanced-theme-fields">Advanced theme fields<a class="anchor" href="#advanced-theme-fields" aria-label="Link to heading">#</a></h2>
+<p>Any advanced property can be added with <code>Theme::Color(name, hex)</code> or <code>Theme::Value(name, Json)</code>. The <em>API accepts</em> the following WindUI-style keys; the current renderer maps the most visible ones to CSS custom properties, with other fields retained as configuration metadata.</p>
+<table>
+<thead>
+<tr>
+  <th>Area</th>
+  <th>Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Core</td>
+  <td><code>Primary</code>, <code>White</code>, <code>Black</code>, <code>Dialog</code>, <code>Background</code>, <code>BackgroundTransparency</code>, <code>Hover</code></td>
+</tr>
+<tr>
+  <td>Panels</td>
+  <td><code>PanelBackground</code>, <code>PanelBackgroundTransparency</code>, <code>WindowBackground</code>, <code>WindowShadow</code>, <code>WindowTopbarTitle</code>, <code>WindowTopbarAuthor</code>, <code>WindowTopbarIcon</code>, <code>WindowTopbarButtonIcon</code>, <code>WindowSearchBarBackground</code></td>
+</tr>
+<tr>
+  <td>Tabs</td>
+  <td><code>TabBackground</code>, <code>TabBackgroundHover</code>, <code>TabBackgroundHoverTransparency</code>, <code>TabBackgroundActive</code>, <code>TabBackgroundActiveTransparency</code>, <code>TabText</code>, <code>TabTextTransparency</code>, <code>TabTextTransparencyActive</code>, <code>TabTitle</code>, <code>TabIcon</code>, <code>TabIconTransparency</code>, <code>TabIconTransparencyActive</code>, <code>TabBorder</code>, <code>TabBorderTransparency</code>, <code>TabBorderTransparencyActive</code>, <code>TabSectionIcon</code></td>
+</tr>
+<tr>
+  <td>Elements</td>
+  <td><code>ElementBackground</code>, <code>ElementBackgroundTransparency</code>, <code>ElementBackgroundHover</code>, <code>ElementTitle</code>, <code>ElementDesc</code>, <code>ElementIcon</code>, <code>Toggle</code>, <code>ToggleBar</code>, <code>Checkbox</code>, <code>CheckboxIcon</code>, <code>CheckboxBorder</code>, <code>CheckboxBorderTransparency</code>, <code>Slider</code>, <code>SliderThumb</code>, <code>SliderIcon</code>, <code>SliderIconFrom</code>, <code>SliderIconTo</code></td>
+</tr>
+<tr>
+  <td>Popups</td>
+  <td><code>PopupBackground</code>, <code>PopupBackgroundTransparency</code>, <code>PopupTitle</code>, <code>PopupContent</code>, <code>PopupIcon</code>, <code>DialogBackground</code>, <code>DialogBackgroundTransparency</code>, <code>DialogTitle</code>, <code>DialogContent</code>, <code>DialogIcon</code></td>
+</tr>
+<tr>
+  <td>Tooltips</td>
+  <td><code>Tooltip</code>, <code>TooltipText</code>, <code>TooltipSecondary</code>, <code>TooltipSecondaryText</code></td>
+</tr>
+<tr>
+  <td>Sections</td>
+  <td><code>SectionIcon</code>, <code>SectionExpandIcon</code>, <code>SectionExpandIconTransparency</code>, <code>SectionBox</code>, <code>SectionBoxTransparency</code>, <code>SectionBoxBorder</code>, <code>SectionBoxBorderTransparency</code>, <code>SectionBoxBackground</code>, <code>SectionBoxBackgroundTransparency</code></td>
+</tr>
+<tr>
+  <td>Other</td>
+  <td><code>SearchBarBorder</code>, <code>SearchBarBorderTransparency</code>, <code>Notification</code>, <code>NotificationTitle</code>, <code>NotificationTitleTransparency</code>, <code>NotificationContent</code>, <code>NotificationContentTransparency</code>, <code>NotificationDuration</code>, <code>NotificationDurationTransparency</code>, <code>NotificationBorder</code>, <code>NotificationBorderTransparency</code>, <code>DropdownTabBorder</code>, <code>LabelBackground</code>, <code>LabelBackgroundTransparency</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<pre><code class="language-cpp">Theme t;
+t.Name(&quot;Advanced Dark&quot;)
+ .Color(&quot;Primary&quot;,&quot;#a1a1aa&quot;)
+ .Color(&quot;WindowBackground&quot;,&quot;#101010&quot;)
+ .Color(&quot;ElementTitle&quot;,&quot;#ffffff&quot;)
+ .Color(&quot;TabBackgroundActive&quot;,&quot;#ffffff&quot;)
+ .Value(&quot;TabBackgroundActiveTransparency&quot;,0.93)
+ .Color(&quot;Toggle&quot;,&quot;#52525b&quot;)
+ .Color(&quot;Slider&quot;,&quot;#0091ff&quot;)
+ .Color(&quot;SliderThumb&quot;,&quot;#ffffff&quot;)
+ .Value(&quot;PanelBackgroundTransparency&quot;,0.95);
+AddTheme(t);
+</code></pre>
+<p>The repository contains a longer field-by-field sample at <a href="https://github.com/RealBatu20/WindUIBE/blob/main/examples/advanced_theme.cpp"><code>examples/advanced_theme.cpp</code></a> and the original renderer mapping in <code>assets/windui.js</code>.</p>
+<h2 id="built-in-presets">Built-in presets<a class="anchor" href="#built-in-presets" aria-label="Link to heading">#</a></h2>
+<p><code>Dark</code>, <code>Light</code>, <code>Rose</code>, <code>Plant</code>, <code>Red</code>, <code>Indigo</code>, <code>Sky</code>, <code>Violet</code>, <code>Amber</code>, <code>Emerald</code>, <code>Midnight</code>, <code>Crimson</code>, <code>Monokai Pro</code>, <code>Cotton Candy</code>, <code>Mellowsi</code>, <code>Rainbow</code>. The C++ demo also registers <code>Minimal Dark</code>.</p>
+<pre><code class="language-cpp">auto names = GetThemes();          // JSON array encoded as std::string
+auto current = GetCurrentTheme(); // std::string
+SetTheme(&quot;Rainbow&quot;);
+ToggleAcrylic(true);               // CSS transparency; not a live scene blur
+</code></pre>
+<p><code>Gradient(Json::Array({...}), Config{})</code> approximates multi-color gradients through CSS. <code>SetFont</code>, <code>SetLanguage</code>, <code>Localization</code>, and arbitrary <code>Theme::Color</code> properties exist, but font availability and localization behavior depend on the renderer. <strong>Advanced 1:1 theme fidelity is not verified</strong>.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="elements.html">← Controls & elements</a><a href="overlays.html">Dialogs & popups →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

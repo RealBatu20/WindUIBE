@@ -1,0 +1,15 @@
+{
+  "type": "preload-native",
+  "name": "WindUI Bedrock Native",
+  "author": "TheRealBatu",
+  "description": "C++-first WindUI Bedrock API: windows, tabs, sections, themes, callbacks, widgets, dialogs, popups, notifications.",
+  "version": "2.0.1",
+  "entry": "libWindUI.so",
+  "minecraft_versions": [
+    "1.26.*",
+    "1.26.6*"
+  ],
+  "overwrite_files": [],
+  "overwrite_folders": [],
+  "hf": true
+}
