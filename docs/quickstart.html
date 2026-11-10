@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Quick start"><title>Quick start — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item active" href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>QUICK START</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="quick-start">Quick start<a class="anchor" href="#quick-start" aria-label="Link to heading">#</a></h1>
+<h2 id="requirements">Requirements<a class="anchor" href="#requirements" aria-label="Link to heading">#</a></h2>
+<ul>
+<li>Minecraft Bedrock Android running under a compatible Levi Launchroid build; compatibility has <strong>not</strong> been device-validated.</li>
+<li>ARM64 Android target, API level 26+. The <code>manifest.json</code> patterns are <code>&quot;1.26.*&quot;</code> and <code>&quot;1.26.6*&quot;</code>.</li>
+<li>For compiling: Linux, Python 3, and Android NDK r28c (<code>aarch64-linux-android26-clang++</code>).</li>
+</ul>
+<h2 id="build-and-install">Build and install<a class="anchor" href="#build-and-install" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-sh">ANDROID_NDK_HOME=/path/to/android-ndk-r28c ./build.sh
+python3 tests/test_static.py
+# Optional, with Playwright and Chromium installed:
+python3 tests/test_browser.py
+</code></pre>
+<p>This generates <code>dist/libWindUI.so</code> and <code>dist/libWindUI_2.0.1.levipack</code>. Import the <code>.levipack</code> in Levi Launchroid's native-mod manager, enable it, start Minecraft, and tap the movable <strong>W</strong> button to open WindUIBE. If injection fails, collect logcat and launcher version details; no device compatibility is guaranteed.</p>
+<h2 id="minimal-native-c-window">Minimal native C++ window<a class="anchor" href="#minimal-native-c-window" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">#include &quot;WindUI.hpp&quot;
+using namespace WindUI;
+
+static void changed(int id, const char* value, void* user) {
+    // Called from the Android UI thread: keep this handler short.
+}
+
+void installUi() {
+    auto window = CreateWindow(
+        WindowConfig{}.Title(&quot;My Super Hub&quot;)
+            .Author(&quot;Native C++&quot;)
+            .Icon(&quot;wind&quot;)
+            .Size(580, 460)
+            .Theme(&quot;Dark&quot;)
+            .SideBarWidth(200)
+    );
+    auto main = window.Tab(TabConfig{}.Title(&quot;Main&quot;).Icon(&quot;home&quot;));
+    main.Toggle(ElementConfig{}.Title(&quot;Enabled&quot;).Value(true))
+        .OnChange(changed);
+    main.Slider(ElementConfig{}.Title(&quot;Volume&quot;).Range(0,100,50,1))
+        .OnChange(changed);
+    main.Dropdown(ElementConfig{}.Title(&quot;Mode&quot;)
+        .Values(std::vector&lt;std::string&gt;{&quot;Normal&quot;,&quot;Creative&quot;,&quot;Advanced&quot;})
+        .Value(&quot;Normal&quot;)).OnChange(changed);
+    Notify(NotificationConfig{}.Title(&quot;Ready&quot;)
+        .Content(&quot;WindUIBE loaded&quot;).Duration(3));
+}
+</code></pre>
+<p><code>Json</code> converts strings, booleans, numbers, objects and arrays into the serialized command stream. <code>Config::Set</code> accepts additional WindUI-style field names: <code>Config{}.Set(&quot;Enabled&quot;, true)</code>; the C++ fluent methods use <code>.Title(...)</code>, <code>.Value(...)</code>, etc. See <code>include/WindUI.hpp</code> for exact signatures.</p>
+<h2 id="native-callbacks">Native callbacks<a class="anchor" href="#native-callbacks" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">void callback(int elementId, const char* value, void* userdata);
+</code></pre>
+<p><code>value</code> is a UTF-8 string for strings, numbers (<code>&quot;75&quot;</code>), booleans (<code>&quot;true&quot;</code>, <code>&quot;false&quot;</code>), and JSON-encoded arrays for multiple selections. Callback execution is on Android's UI thread. Do not perform blocking Minecraft operations in a callback.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="index.html">← Overview</a><a href="window.html">Windows & tabs →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

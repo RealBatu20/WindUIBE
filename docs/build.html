@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Build &amp; limitations"><title>Build &amp; limitations — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item " href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item active" href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>BUILD &amp; LIMITATIONS</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="build-tests-and-limitations">Build, tests and limitations<a class="anchor" href="#build-tests-and-limitations" aria-label="Link to heading">#</a></h1>
+<h2 id="build-environment">Build environment<a class="anchor" href="#build-environment" aria-label="Link to heading">#</a></h2>
+<p>Use a Linux host with Python 3 and Android NDK r28c. The supplied build uses the Android API 26 ARM64 Clang toolchain. Java source is retained as a reference; <code>tools/make_bridge_dex.py</code> constructs the small embedded DEX without a JDK/R8 dependency.</p>
+<pre><code class="language-sh">export ANDROID_NDK_HOME=/path/to/android-ndk-r28c
+./build.sh
+python3 tests/test_static.py
+</code></pre>
+<p><code>build.sh</code> writes a 16K-page-compatible ARM64 <code>dist/libWindUI.so</code> and wraps it with <code>manifest.json</code>, <code>LICENSE</code>, and <code>ATTRIBUTION.txt</code> into <code>dist/libWindUI_2.0.1.levipack</code>.</p>
+<p>The stripped library depends on Android system libraries and <code>libc++_shared.so</code> at runtime. Not all Levi Launchroid installations necessarily supply these dependencies in the module's linker namespace.</p>
+<h2 id="optional-renderer-tests">Optional renderer tests<a class="anchor" href="#optional-renderer-tests" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-sh"># Requires g++ / Playwright / Chromium
+# Host mock stubs are included for generating test commands.
+g++ -std=c++17 -Itests/hoststub src/demo.cpp tests/mock.cpp -o tests/demo_host
+./tests/demo_host &gt; tests/demo_commands.jsonl
+python3 tests/test_browser.py
+</code></pre>
+<p>The source bundle includes <code>tests/mock.cpp</code>, <code>tests/hoststub/android/log.h</code>, and <code>tests/demo_commands.jsonl</code> so the optional browser test can run independently. The standalone static test runs after an NDK build. A browser test only checks HTML/JavaScript behavior and cannot certify actual Minecraft integration.</p>
+<h2 id="verified-offline">Verified offline<a class="anchor" href="#verified-offline" aria-label="Link to heading">#</a></h2>
+<ul>
+<li>ARM64 ELF compilation/linking, packaging and ZIP integrity.</li>
+<li>Manifest fields, embedded DEX structure and checksums.</li>
+<li>Chromium rendering of four demo tabs, nested sections, toggles, sliders, dropdowns, inputs, dialogs, popups, notifications and theme switching with zero page JavaScript errors.</li>
+<li>The v2.0.1 change replaces the demo's <strong>Enable notifications</strong> checkbox with a rounded toggle and the system dropdown picker with an <strong>in-panel menu</strong>.</li>
+</ul>
+<h2 id="not-verified-remaining-differences">Not verified / remaining differences<a class="anchor" href="#not-verified-remaining-differences" aria-label="Link to heading">#</a></h2>
+<ul>
+<li>On-device Levi Launchroid 1.6.x and Minecraft injection, touch dispatch, overlay lifetime or activity switching.</li>
+<li>Every WindUI advanced theme key affecting a visible element.</li>
+<li>Accurate translation/localization, Roblox asset resolution, custom key binding across physical controllers, secure key validation, original acrylic/gradient/animation visuals.</li>
+<li>Every configuration value receiving an observable GUI effect. Some builders are accepted and stored as metadata.</li>
+<li>True native Minecraft GUI integration (current implementation is WebView).</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to heading">#</a></h2>
+<p><strong>The <code>W</code> button does not appear.</strong> Check launcher native-mod enablement, architecture and logcat for <code>WindUI</code> tags. Activity discovery uses <code>InbuiltOverlayManager</code> and may need adaptation to a newer launcher.</p>
+<p><strong>The panel opens but is blank.</strong> Check Android WebView availability and JavaScript errors. The HTML and DEX are embedded in <code>libWindUI.so</code>.</p>
+<p><strong>The module fails to load.</strong> Check <code>libc++_shared.so</code> and Android API 26 support. <code>readelf -d dist/libWindUI.so</code> shows its dynamic dependencies.</p>
+<p><strong>A dropdown opens an Android full-screen list.</strong> That indicates an older v2.0.0 renderer containing <code>&lt;select&gt;</code>. Rebuild/replace with v2.0.1, where the dropdown uses buttons inside the WindUI scroll area.</p>
+<p><strong><code>GetThemes()</code> doesn't show your custom theme.</strong> Theme registration queues commands asynchronously, and C++ getters may reflect tracked state rather than a synchronous WebView query.</p>
+<p><strong>Minecraft versions:</strong> <code>&quot;1.26.*&quot;</code>, <code>&quot;1.26.6*&quot;</code> are the requested manifest strings, not evidence all listed versions were tested.</p>
+<h2 id="credits-and-license">Credits and license<a class="anchor" href="#credits-and-license" aria-label="Link to heading">#</a></h2>
+<p>The project is MIT-licensed. WindUIBE is an independent Android adaptation inspired by <a href="https://github.com/Footagesus/WindUI">Footagesus/WindUI</a> and the Java/Dex loader approach of <a href="https://github.com/Zxwmwmwm/LumaUI">Zxwmwmwm/LumaUI</a>. Neither upstream project endorses this mod. See <code>ATTRIBUTION.txt</code> and <code>LICENSE</code>.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="native.html">← Native C++ ABI</a><span></span></nav></div></main></div><script defer src="assets/site.js"></script></body></html>

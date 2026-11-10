@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="WindUIBE v2.0.1 native C++17 UI for Levi Launchroid: Dialogs &amp; popups"><title>Dialogs &amp; popups — WindUIBE Docs</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><button id="mobile-nav" aria-label="Toggle navigation">☰</button><div class="layout"><aside id="sidebar"><div class="brand"><span class="brand-icon">≋</span><div><strong>WindUIBE</strong><small>C++ API · v2.0.1</small></div></div><label class="search-box"><span>⌕</span><input type="search" id="doc-search" placeholder="Search docs…" aria-label="Search documentation"></label><div id="search-results" hidden></div><div id="nav-list"><p class="nav-caption">DOCUMENTATION</p><a class="nav-item " href="index.html"><span class="nav-dot">01</span>Overview</a><a class="nav-item " href="quickstart.html"><span class="nav-dot">02</span>Quick start</a><a class="nav-item " href="window.html"><span class="nav-dot">03</span>Windows &amp; tabs</a><a class="nav-item " href="elements.html"><span class="nav-dot">04</span>Controls &amp; elements</a><a class="nav-item " href="themes.html"><span class="nav-dot">05</span>Themes</a><a class="nav-item active" href="overlays.html"><span class="nav-dot">06</span>Dialogs &amp; popups</a><a class="nav-item " href="native.html"><span class="nav-dot">07</span>Native C++ ABI</a><a class="nav-item " href="build.html"><span class="nav-dot">08</span>Build &amp; limitations</a></div><div class="sidebar-footer"><a href="https://github.com/RealBatu20/WindUIBE">GitHub repository</a><small>Unofficial WindUI port · MIT</small></div></aside><main class="main"><header class="header"><div class="crumb">WINDUIBE / <span>DIALOGS &amp; POPUPS</span></div><div class="header-links"><a href="https://github.com/RealBatu20/WindUIBE">Source</a><a href="https://github.com/RealBatu20/WindUIBE/issues">Issues</a></div></header><div class="body"><div class="meta">C++17 / ANDROID ARM64 / LEVI LAUNCHROID</div><article><h1 id="dialogs-popups-and-notifications">Dialogs, popups and notifications<a class="anchor" href="#dialogs-popups-and-notifications" aria-label="Link to heading">#</a></h1>
+<p>The C++ API represents confirmation dialogs, standalone popups, and toasts as distinct components.</p>
+<h2 id="dialog">Dialog<a class="anchor" href="#dialog" aria-label="Link to heading">#</a></h2>
+<p>Dialogs use a modal backdrop and block interaction with the underlying panel until dismissed.</p>
+<pre><code class="language-cpp">static void confirmed(int id,const char* value,void*) {}
+
+auto dialog = window.Dialog(
+    ModalConfig{}.Title(&quot;Confirm Delete&quot;)
+      .Icon(&quot;alert-circle&quot;)
+      .IconThemed(true)
+      .Content(&quot;This action cannot be undone.&quot;)
+      .AddButton(DialogButton(&quot;Delete&quot;, confirmed, nullptr,
+                              &quot;Destructive&quot;, &quot;trash-2&quot;))
+      .AddButton(DialogButton(&quot;Cancel&quot;, nullptr, nullptr,
+                              &quot;Secondary&quot;, &quot;x&quot;))
+);
+dialog.Show();
+// later: dialog.Close();
+</code></pre>
+<p><code>DialogButton</code> parameters are <code>(title, callback, userdata, variant, icon)</code>; supported labels include <code>Primary</code>, <code>Secondary</code>, <code>Destructive</code> and <code>Tertiary</code>. The labels are preserved but visual behavior is not pixel-identical to Roblox.</p>
+<h2 id="popup">Popup<a class="anchor" href="#popup" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">auto popup = WindUI::Popup(
+  ModalConfig{}.Title(&quot;Welcome&quot;)
+    .Icon(&quot;bell&quot;)
+    .Content(&quot;Welcome to the native UI&quot;)
+    .AddButton(DialogButton(&quot;Get Started&quot;, confirmed))
+);
+popup.Show();
+popup.Close();
+</code></pre>
+<p>Popups render as separate styled windows inside the main UI; they are not Android system windows.</p>
+<h2 id="notification">Notification<a class="anchor" href="#notification" aria-label="Link to heading">#</a></h2>
+<pre><code class="language-cpp">Notify(NotificationConfig{}
+  .Title(&quot;Success&quot;)
+  .Content(&quot;Operation completed&quot;)
+  .Icon(&quot;check-circle&quot;)
+  .Duration(3));
+
+SetNotificationLower(true); // show lower in UI, not Roblox jump button detection
+</code></pre>
+<p>Notifications are toast-like messages that auto-dismiss. The lower setting positions them near the bottom of the WindUI view; no Android system notification permission is involved. Roblox-specific jump-button avoidance is not implemented.</p>
+<h2 id="library-api">Library API<a class="anchor" href="#library-api" aria-label="Link to heading">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Call</th>
+  <th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>CreateWindow(WindowConfig)</code></td>
+  <td>Create UI state and view</td>
+</tr>
+<tr>
+  <td><code>AddTheme(Theme)</code></td>
+  <td>Register color theme</td>
+</tr>
+<tr>
+  <td><code>SetTheme(name)</code>, <code>GetThemes()</code>, <code>GetCurrentTheme()</code></td>
+  <td>Preset/theme control (getter state is C++ tracked)</td>
+</tr>
+<tr>
+  <td><code>Gradient(colors, config)</code></td>
+  <td>CSS gradient approximation</td>
+</tr>
+<tr>
+  <td><code>SetNotificationLower(bool)</code></td>
+  <td>Toast placement</td>
+</tr>
+<tr>
+  <td><code>SetFont(name)</code></td>
+  <td>CSS font-family request</td>
+</tr>
+<tr>
+  <td><code>SetLanguage(code)</code>, <code>Localization(Config)</code></td>
+  <td>Metadata; incomplete translation</td>
+</tr>
+<tr>
+  <td><code>ToggleAcrylic(bool)</code></td>
+  <td>CSS blur/translucency</td>
+</tr>
+<tr>
+  <td><code>GetTransparency()</code>, <code>GetWindowSize()</code></td>
+  <td>Native model information</td>
+</tr>
+<tr>
+  <td><code>SetParent(string)</code></td>
+  <td><strong>No-op</strong>: Roblox <code>Instance</code> not available</td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-system-and-user-config">Key system and user config<a class="anchor" href="#key-system-and-user-config" aria-label="Link to heading">#</a></h2>
+<p>The <code>WindowConfig</code> accepts <code>.KeySystem(Json)</code> and <code>.User(Json)</code>. <code>window.KeyValidator(function, userdata)</code> registers a C++ key-validation callback. Optional local saving uses WebView storage; <strong>this is a convenience UI gate, not secure authentication</strong>. The Roblox <code>URL</code>/thumbnail behaviors are not fully replicated.</p>
+</article><div class="doc-foot">Last documented for v2.0.1 · On-device compatibility not yet verified. <a href="build.html">Read limitations</a>.</div><nav class="prevnext"><a href="themes.html">← Themes</a><a href="native.html">Native C++ ABI →</a></nav></div></main></div><script defer src="assets/site.js"></script></body></html>
